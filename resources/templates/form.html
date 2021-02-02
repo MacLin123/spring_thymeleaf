@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Form</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:href="@{/form.css}" rel="stylesheet"/>
+</head>
+<body>
+<h1>Form</h1>
+<div class="container">
+    <form action="#" th:action="@{/user/create}" th:object="${userForm}" method="post"
+          enctype="multipart/form-data">
+
+        <span style="color: red;" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"/>
+        <p>first name: <input type="text" th:field="*{firstName}"/></p>
+
+        <span style="color: red;" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"/>
+        <p>last name:<input type="text" th:field="*{lastName}"/>
+
+        <span style="color: red;" th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}"/>
+        <p>middle name: <input type="text" th:field="*{middleName}"/></p>
+
+        <span style="color: red;" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"/>
+        <p>age: <input type="text" th:field="*{age}"/></p>
+
+        <span style="color: red;" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}"/>
+        <p>salary: <input type="text" th:field="*{salary}"/></p>
+
+        <span style="color: red;" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"/>
+        <p>email: <input type="text" th:field="*{email}"/></p>
+
+        <span style="color: red;" th:if="${#fields.hasErrors('company')}" th:errors="*{company}"/>
+        <p>company: <input type="text" th:field="*{company}"/></p>
+
+        <p>about me (text file): <input type="file" name="file" value="upload file" th:field="*{file}" /> </p>
+
+        <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+    </form>
+</div>
+<a href="/">Back</a>
+</body>
+</html>

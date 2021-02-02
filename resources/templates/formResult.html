@@ -1,0 +1,38 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Result of find user</title>
+    <link th:href="@{/form.css}" rel="stylesheet"/>
+</head>
+<body>
+<h1>User information</h1>
+<p th:text="'first name: ' + ${userView.firstName}"/>
+<p th:text="'last name: ' + ${userView.lastName}"/>
+<p th:text="'middle name: ' + ${userView.middleName}"/>
+<p th:text="'age: ' + ${userView.age}"/>
+<p th:text="'salary: ' + ${userView.salary}"/>
+<p th:text="'email: ' + ${userView.email}"/>
+<p th:text="'company: ' + ${userView.company}"/>
+<p th:if="${userView.aboutMe!=null}" th:text="'About me: ' + ${userView.aboutMe}"/>
+<p th:if="${userAgent!=null}" th:text="'User-Agent: ' + ${userAgent}"/>
+<p th:if="${date!=null}" th:text="'Date: ' + ${date}"/>
+
+<div class="container">
+    <form action="#" th:action="@{/user/sendemail}" method="post">
+
+        <p>subject : <input type="text" th:value="${subject}" name="subject"/></p>
+
+        <p>text:<input type="text" th:value="${text}" name="text"/>
+        <input type="hidden" th:value="${userView.email}" name="to"/>
+
+        <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+    </form>
+</div>
+
+<a href="/">Back</a>
+</body>
+<head>
+    <title>User form</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+</html>
