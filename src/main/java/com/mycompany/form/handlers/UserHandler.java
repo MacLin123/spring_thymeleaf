@@ -16,28 +16,30 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class UserHandler {
 
-    private Logger logger = LoggerFactory.getLogger(UserHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(UserHandler.class);
 
     /**
      * This method writes data from userForm to file.
+     *
      * @param userForm - data to write
-     * @throws IOException
      */
     public void writeDataToFile(UserForm userForm) throws IOException {
         String userStr = getUserRowString(userForm);
 
-        FileWriter fw = new FileWriter(UserData.FILE_DATA, true);
-        BufferedWriter bw = new BufferedWriter(fw);
-        bw.append(userStr);
-        bw.flush();
-        bw.close();
+        try (
+                FileWriter fw = new FileWriter(UserData.FILE_DATA, true);
+                BufferedWriter bw = new BufferedWriter(fw)
+        ) {
+            bw.append(userStr);
+            bw.flush();
+        }
     }
 
     /**
      * This method converts UserForm to String
+     *
      * @param userForm data to convert to String
      * @return comma separated string that represents userForm
-     * @throws IOException
      */
     public String getUserRowString(UserForm userForm) throws IOException {
         StringBuilder userStrBuild = new StringBuilder();
@@ -59,20 +61,24 @@ public class UserHandler {
 
     /**
      * This method looks for user in the file.
+     *
      * @param firstName - first name of user
-     * @param lastName - last name of user
+     * @param lastName  - last name of user
      * @return UserView obj with data of user.
-     * @throws IOException
      */
     public UserView getUserFromFile(String firstName, String lastName) throws IOException {
         UserView userView = null;
-        FileReader fr = new FileReader("data.csv");
-        BufferedReader br = new BufferedReader(fr);
-        String userStr = br.lines().filter(s -> {
-            String[] row = s.split(",");
-            return firstName.equals(row[UserData.FIRST_NAME.getValue()])
-                    && lastName.equals(row[UserData.LAST_NAME.getValue()]);
-        }).findAny().orElse(null);
+
+        String userStr;
+        try (FileReader fr = new FileReader("data.csv");
+
+             BufferedReader br = new BufferedReader(fr)) {
+                userStr = br.lines().filter(s -> {
+                String[] row = s.split(",");
+                return firstName.equals(row[UserData.FIRST_NAME.getValue()])
+                        && lastName.equals(row[UserData.LAST_NAME.getValue()]);
+            }).findAny().orElse(null);
+        }
         if (userStr != null) {
             String[] row = userStr.split(",");
 
@@ -94,9 +100,10 @@ public class UserHandler {
 
     /**
      * This method converts UserForm to UserView
-     * @param userForm
+     *
+     * @param userForm - form information
      * @return UserView representation of UserForm
-     * @throws IOException
+     * @throws IOException - throws if can't get a file
      */
     public UserView getUserView(UserForm userForm) throws IOException {
         return new UserView(
